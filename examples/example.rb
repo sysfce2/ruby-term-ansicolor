@@ -76,10 +76,38 @@ print "clear".clear, "reset".reset, "bold".bold, "dark".dark,
 
 symbols = Term::ANSIColor::attributes
 print red { bold { "All supported attributes = " } },
-  symbols.map { |s| __send__(s, s.inspect) } * ', ', "\n\n"
+  symbols.map { |s| __send__(s, s.inspect) } * ",\n", "\n\n"
 
 print "Send symbols to strings:".send(:red).send(:bold), "\n"
 print symbols[12, 8].map { |c| c.to_s.send(c) } * '', "\n\n"
+
+print red { bold { "Use true colors if supported" } }, "\n"
+
+colors = Term::ANSIColor::Attribute['#ff0000'].gradient_to(
+  Term::ANSIColor::Attribute['#ffff00'],
+  true_coloring: true,
+  step: 16
+)
+colors += Term::ANSIColor::Attribute[colors.last].gradient_to(
+  Term::ANSIColor::Attribute['#00ff00'],
+  true_coloring: true,
+  step: 16
+)
+colors += Term::ANSIColor::Attribute[colors.last].gradient_to(
+  Term::ANSIColor::Attribute['#00ffff'],
+  true_coloring: true,
+  step: 16
+)
+colors += Term::ANSIColor::Attribute[colors.last].gradient_to(
+  Term::ANSIColor::Attribute['#0000ff'],
+  true_coloring: true,
+  step: 16
+)
+
+chars = %w[ ⣾ ⣽ ⣻ ⢿ ⡿ ⣟ ⣯ ⣷ ]
+colors.each_with_index { |c, i| print c.apply { chars[i % chars.size] } }
+puts
+puts
 
 print red { bold { "Make strings monochromatic again:" } }, "\n"
 print [
@@ -88,3 +116,5 @@ print [
     uncolored { "not red anymore".red },
     uncolored("not red anymore".red)
   ].map { |x| x + "\n" } * ''
+
+puts "Use the " + "Source".hyperlink("https://github.com/flori/term-ansicolor") + ", Luke!"

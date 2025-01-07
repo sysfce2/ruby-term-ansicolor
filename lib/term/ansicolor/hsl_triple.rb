@@ -2,7 +2,7 @@ module Term
   module ANSIColor
     class HSLTriple
       def self.from_rgb_triple(rgb)
-        ps = rgb.to_a.map { |x| x / 255.0 }
+        ps = [ rgb.red / 255.0, rgb.green / 255.0, rgb.blue / 255.0 ]
         p_min = ps.min
         p_max = ps.max
         p_red, p_green, p_blue = ps
@@ -72,8 +72,8 @@ module Term
 
       def initialize(hue, saturation, lightness)
         @hue        = Float(hue) % 360
-        @saturation = [ [ Float(saturation), 0 ].max, 100 ].min
-        @lightness  = [ [ Float(lightness), 0 ].max, 100 ].min
+        @saturation = Float(saturation).clamp(0, 100)
+        @lightness  = Float(lightness).clamp(0, 100)
       end
 
       attr_reader :hue

@@ -59,9 +59,11 @@ module Term
       end
 
       def initialize(red, green, blue)
-        @values = [ red, green, blue ].map { |v|
-          [ [ Integer(v), 0 ].max, 0xff ].min
-        }
+        @values = [
+          red.clamp(0, 0xff),
+          green.clamp(0, 0xff),
+          blue.clamp(0, 0xff),
+        ]
       end
 
       def red
@@ -101,14 +103,12 @@ module Term
       end
 
       def html
-        s = '#'
-        @values.each { |c| s << '%02x' % c }
-        s
+        '#%02x%02x%02x' % @values
       end
 
       def css(percentage: false)
         if percentage
-          "rgb(%s%%,%s%%,%s%%)" % @values.map { |v| 100.0 * v / 255 }
+          "rgb(%s%%,%s%%,%s%%)" % percentages
         else
           "rgb(%u,%u,%u)" % @values
         end

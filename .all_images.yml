@@ -1,18 +1,17 @@
 dockerfile: |-
-  RUN apk add --no-cache build-base git
-  RUN gem update --system
-  RUN gem install gem_hadar bundler
+  RUN apk add --no-cache build-base git bash
+  RUN gem install gem_hadar
 
 script: &script |-
   echo -e "\e[1m"
   ruby -v
   echo -e "\e[0m"
   bundle
-  rake test
+  rake test RUBYOPT="--enable-frozen-string-literal --debug-frozen-string-literal"
 
 images:
+  ruby:3.4-alpine: *script
+  ruby:3.3-alpine: *script
   ruby:3.2-alpine: *script
   ruby:3.1-alpine: *script
   ruby:3.0-alpine: *script
-  ruby:2.7-alpine: *script
-  ruby:2.6-alpine: *script

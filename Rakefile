@@ -8,14 +8,17 @@ GemHadar do
   path_module 'Term::ANSIColor'
   author      'Florian Frank'
   email       'flori@ping.de'
-  homepage    "http://flori.github.com/#{name}"
+  homepage    "https://github.com/flori/#{name}"
   summary     'Ruby library that colors strings using ANSI escape sequences'
   description 'This library uses ANSI escape sequences to control the attributes of terminal output'
   licenses    << 'Apache-2.0'
 
   test_dir    'tests'
   ignore      '.*.sw[pon]', 'pkg', 'Gemfile.lock', '.rvmrc', 'coverage',
-    'tags', '.bundle', '.byebug_history'
+    'tags', '.bundle', '.byebug_history', 'errors.lst', 'cscope.out'
+  package_ignore '.all_images.yml', '.tool-versions', '.gitignore', 'VERSION',
+     '.utilsrc', '.rspec', 'TODO',
+     *Dir.glob('.github/**/*', File::FNM_DOTMATCH)
 
   readme      'README.md'
   executables.merge Dir['bin/*'].map { |x| File.basename(x) }
@@ -23,5 +26,6 @@ GemHadar do
   dependency             'tins', '~>1.0'
   development_dependency 'simplecov'
   development_dependency 'test-unit'
-  development_dependency 'utils'
+  development_dependency 'debug'
+  development_dependency 'all_images'
 end
